@@ -1,0 +1,6 @@
+[submodule "themes/book"]
+	path = themes/book
+	url = https://github.com/alex-shpak/hugo-book.git
+[submodule "COE-311K"]
+	path = COE-311K
+	url = https://github.com/prashjha/COE-311K.git

@@ -1,0 +1,11 @@
+baseURL = 'https://prashjha.github.io/COE-311K-website/'
+title = 'COE 311K'
+theme = 'book'
+publishDir = 'docs'
+
+[menu]
+# [[menu.after]]
+[[menu.before]]
+  name = "Prashant's Homepage"
+  url = "https://prashjha.github.io/"
+  weight = 1

@@ -1,0 +1,12 @@
+# IDEs
+.idea/
+
+# Hugo
+resources/
+
+# from mac
+._*
+*/._*
+
+.DS_Store
+*/.DS_Store/*
