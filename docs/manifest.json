@@ -1,0 +1,15 @@
+{
+  "name": "COE 311K",
+  "short_name": "COE 311K",
+  "start_url": "/COE-311K-website/",
+  "scope": "/COE-311K-website/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/COE-311K-website/favicon.svg",
+      "sizes": "512x512"
+    }
+  ]
+}
