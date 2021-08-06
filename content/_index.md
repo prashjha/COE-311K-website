@@ -7,7 +7,7 @@ type: docs
 
 ## Welcome
 
-In this website, you will find key information about the course such as syllabus, lecture slides and videos, and assignments. 
+In this website, you will find key information about the course such as syllabus, lecture slides, and assignments. 
 
 ## COE 311K Fall 2021
 
@@ -19,17 +19,14 @@ Lecture time: MWF 9am-10am
 
 Lecture room: ASE 1.126
 
-Office hours: TBA
+Office hours: Wednesday 4:00 - 6:00 pm
 
-Discussion sessions: TBA
-
-Teaching Assistants: TBA
 
 ## Important links
-1. Check for syllabus and policies: [**Syllabus**]({{< relref "/docs/syllabus" >}}), [**Policies**]({{< relref "/docs/syllabus/policies" >}})
+1. Check for syllabus: [**Syllabus**]({{< relref "/docs/syllabus" >}}), [**Gradiing policies**]({{< relref "/docs/syllabus/policies" >}})
 
 2. Canvas link to the course: [**Canvas**](https://utexas.instructure.com/courses/1316151)
 
-3. We will also use slack for communication: [**Slack**](https://coe311k-uta.slack.com/). If interested, join via this [link](https://join.slack.com/t/coe311k-uta/shared_invite/zt-u07lbhds-36XXB0aKgBzOIgs2MHNHeA)
+3. For group communication and online discussion, we will mainly use Canvas, however, I have also created a forum in `gitter` for this course. This is public forum and it is supereasy to join. Join gitter forum for this course [here](https://gitter.im/UTA-Fall2021-COE-311K/community)
 
-4. Lecture slides and videos are available here: [**Lectures**]
+4. Lecture slides and assignments will be updated in this github repository: [COE 311K](https://github.com/prashjha/COE-311K)
