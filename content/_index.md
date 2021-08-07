@@ -13,17 +13,17 @@ In this website, you will find key information about the course such as syllabus
 
 Instructor: [Prashant K. Jha](https://prashjha.github.io/)
 
-Email: prashant.jha@austin.utexas.edu
+Email: prashant.jha@austin.utexas.edu, pjha.sci@gmail.com
 
-Lecture time: MWF 9am-10am
+Lecture time: MWF 9:00 -10:00 am
 
-Lecture room: ASE 1.126
+Lecture room: ASE 1.126 [map](https://goo.gl/maps/iB4UFDYAM1SCF3Qz5)
 
-Office hours: Wednesday 4:00 - 6:00 pm
+Office hours: Wednesday, 4:00 - 6:00 pm
 
 
 ## Important links
-1. Check for syllabus: [**Syllabus**]({{< relref "/docs/syllabus" >}}), [**Gradiing policies**]({{< relref "/docs/syllabus/policies" >}})
+1. Check for syllabus and grading details: [**Syllabus**]({{< relref "/docs/syllabus" >}}), [**Grading**]({{< relref "/docs/syllabus/grading" >}})
 
 2. Canvas link to the course: [**Canvas**](https://utexas.instructure.com/courses/1316151)
 
