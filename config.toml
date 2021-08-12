@@ -2,6 +2,7 @@ baseURL = 'https://prashjha.github.io/COE-311K-website/'
 title = 'COE 311K'
 theme = 'book'
 publishDir = 'docs'
+googleAnalytics = "UA-132780463-3"
 
 [menu]
 # [[menu.after]]
