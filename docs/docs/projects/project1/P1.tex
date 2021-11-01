@@ -1,0 +1,135 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cleveref}
+
+\newcommand{\dd}{\mathrm{d}}
+
+\usepackage[a4paper, total={7in, 9.5in}]{geometry}
+
+\begin{document}
+
+\begin{center} 
+\textbf{\Large Project 1} 
+\end{center}
+
+In the assignment 2, we considered a problem of temperature distribution in a uniform bar of length $L$. Temperature $T = T(x)$ satisfies:
+\begin{equation}\label{eq:ode}
+-\kappa a \frac{\dd^2 T(x)}{\dd x^2} = a q_{ext}(x), \qquad \text{for all } 0 \leq x \leq L ,
+\end{equation}
+with boundary conditions 
+\begin{equation}\label{eq:bc}
+T(x=0) = T(0) = T_0, \qquad T(x=L) = T(L) = T_L .
+\end{equation}
+
+\vspace{10pt}
+\noindent\textit{Parameters.} Let $L = 1$ m, $a = 1$ m$^2$, $T_0 = 0$ Celsius, $T_L = 100$ Celsius, and $\kappa = 1/200$ Watts/$(\text{m} \times \text{Celsius})$. Further, fix external heat function (in units of Watt/$(\text{m}^3$) as follows:
+\begin{equation}\label{eq:qext}
+q_{ext}(x) = 12x^2 + \cos(5x) + 100x \sin(10x).
+\end{equation}
+Discretize the bar into small pieces of size $h = L/(N-1)$, where $N>2$ is some integer (higher $N$ means pieces of smaller size). The points on bar are $x_1 = 0, x_2 = h, x_3 = 2h, ..., x_i = (i-1)h, ..., x_N = (N-1)h = L$. Denote temperature at discrete point $x_i$ on bar by $T_i = T(x_i)$.
+
+In this project, your goal is to derive the numerical method and solve the problem \eqref{eq:ode}. You will also analyze the numerical error by comparing the numerical solution with the analytical solution. 
+
+\vspace{10pt}
+\noindent\textbf{Problem 1 (25 marks).} \textit{\textbf{Derive}} numerical method for the problem \eqref{eq:ode} with boundary conditions \eqref{eq:bc}.  
+
+\vspace{10pt}
+\noindent\textbf{Problem 2 (25 marks).} 
+
+\begin{itemize}
+\item[(i)] \textit{\textbf{Compute}} temperature at discrete points $x_1, x_2, ..., x_N$ using the method you derived in Problem 1. Consider 5 different mesh sizes $h$: $h = L/4, L/8, L/16, L/32, L/64$. 
+
+\item[(ii)] From Assignment 2, you know the exact solution of problem \eqref{eq:ode}, therefore, you can compute exact values of temperatures at discrete points. Let $\bar{T}$ is the exact temperature field, and $\bar{T}_1 = \bar{T}(x_1), \bar{T}_2 = \bar{T}(x_2), ..., \bar{T}_N = \bar{T}(x_N)$ values of $\bar{T}$ at discrete points. Then, clearly, $T_1 - \bar{T}_1, T_2 - \bar{T}_2, ..., T_N - \bar{T}_N$ are the numerical errors in temperature at discrete points. 
+
+Define
+\begin{equation}
+L_2(T) = \int_{0}^L T(x)^2 \dd x
+\end{equation}
+and 
+\begin{equation}
+L_2(E) = \int_0^L (T(x) - \bar{T}(x))^2 \dd x,
+\end{equation}
+where $L_2(T)$ is called the $L^2$-norm of temperature and $L_2(E)$ the $L^2$-norm of error $T(x) - \bar{T}(x)$. 
+
+\textit{\textbf{Plot}} $L_2(T)$ and $L_2(E)$ for five different mesh sizes, $h = L/4, L/8, L/16, L/32, L/64$,  as a function of $h$. I.e., for different $h$, you will have different values $L_2(T), L_2(E)$, and therefore you can plot $h$ in x-axis and these two numbers in y-axis as a function of $h$.
+
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{Problem 3 (25 marks).} 
+
+\begin{itemize}
+\item[(i)] \textit{\textbf{Study}} the structure of matrix system you obtained in Problem 1. It is called \textit{sparse matrix}. For the matrix you have, identify the calculations in  Gauss-Elimination and Gauss-Seidel (iterative  method) which are redundant and only waste compute energy (examples of redundant calculation are 0*0 = 0, 1/1 = 1, 0 - 0 = 0, etc.).
+
+\item[(ii)] After you have identified the calculations which waste compute energy, \textit{\textbf{suggest}} how you can improve the implementation of at least one method (choose from Gauss-Elimination and Gauss-Seidel).
+
+\item[(iii)] Next, \textit{\textbf{implement}} what you suggested and show the time required to solve the problem with $h = L/64$ using default method (the one you selected) is higher compared to the one using improved method. You get full marks only if you can demonstrate the difference in compute time. 
+
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{Problem 4 (25 marks).}  Submit project report where you answer above questions following the format described in the next section.
+
+\vspace{10pt}
+\begin{center}
+\textbf{\Large Guidelines for preparing project report} 
+\end{center}
+Your report will have four sections in following order:
+\begin{itemize}
+\item[1.] In this section, you will discuss the physical significance and application of the temperature problem, and what you have learned in doing this project.
+\item[2.] Answers to all the problem 1, 2, and 3. You must prepare this report such that it is self-contained. Meaning, if I send this report to a new person not related to this course, he/she should be able to see what the problems are, what are the answers, and the logical steps in deriving the method and obtaining the answers.
+\item[3.] In this section, you will write in your own-words the role different members played in finishing this report, and if group efforts and discussion with group members helped you in finishing this report or if you would have rather done the problems yourself. 
+\item[4.] Attach your codes as a supplement to this report.
+\end{itemize}
+
+\vspace{10pt}
+\begin{center}
+\textbf{\Large Some hints}
+\end{center}
+\begin{itemize}
+\item[1.] Given a function $f = f(x)$ and small number $\delta$, we can approximate the derivative of a function at $x$ using
+\begin{equation}
+\frac{\dd f}{\dd x}(x) \approx \frac{f(x+\delta) - f(x)}{\delta}
+\end{equation}
+and
+\begin{equation}
+\frac{\dd^2 f}{\dd x^2}(x) \approx \frac{f(x+\delta) - 2f(x) + f(x - \delta)}{\delta^2},
+\end{equation}
+where we assume that function is defined for $x-\delta$ and $x+\delta$. 
+
+\item[2.] In case of temperature problem, using this method, you can not approximate 
+$$\frac{\dd^2 T}{\dd x^2}(0)$$
+as $T$ is not defined for $x = 0 - \delta$. Similarly, you can not apply the formula to approximate
+$$\frac{\dd^2 T}{\dd x^2}(L)$$
+as $T$ is not defined for $x=L+\delta$. Since $T(0)$ and $T(L)$ are given from boundary condition, you do not need to solve for the temperature at $x=0$ and $x=L$. 
+
+So, derive the numerical method for all interior discrete points (all discrete points except $x_1 = 0$ and $x_N = L$) using the approximation of second derivative in hint 1. 
+
+\item[3.] You can approximate the integral of $f = f(x)$ from $x=a $ to $x=b$ using Trapezoidal rule:
+\begin{equation}
+\int_a^b f(x) \dd x \approx = \frac{\delta }{2} \left[f(a) + 2f(a+\delta) + 2f(a+2\delta) + ... + 2f(a+(N-2)\delta) + f(a+(N-1)\delta) \right],
+\end{equation}
+where $\delta = (b-a)/N$, $N>1$ some integer. Approximation basically uses values of function at discrete points in interval $[a, b]$. 
+
+\item[4.] The numerical method in Problem 1 will be basically $A x = b$, where $A$ is some matrix that will depend on $\kappa$, cross-sectional area of bar $a$, and mesh size $h$. Unknown $x$ will be vector of temperature 
+\begin{align}
+x = \begin{bmatrix}
+T(x_2) \\
+T(x_3) \\
+\cdot \\
+\cdot \\
+\cdot \\
+T(x_{N-1})
+\end{bmatrix},
+\end{align}
+where we do not treat $T(x_1)$ and $T(x_N)$ as unknowns as they are fixed using boundary condition. Also, first and last elements of vector $b$ will include the boundary condition information $T(0)  = T_0$ and $T(L) = T_L$. 
+\end{itemize} 
+
+
+\end{document}
