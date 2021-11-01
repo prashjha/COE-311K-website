@@ -1,0 +1,189 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cleveref}
+
+\usepackage{enumitem}
+%\setlist[itemize]{nosep,left=0pt}
+\setlist[itemize]{left=5pt}
+\setlist[enumerate]{left=5pt}
+\setlist[description]{left=5pt}
+
+%\usepackage{algorithm}
+% \usepackage{algpseudocode}
+\usepackage[ruled]{algorithm2e}
+\usepackage{algcompatible}
+\algblockdefx[Hloop]{Hloop}{EndHloop}[1][]{\textbf{hpx::parallel::for$\_$loop} #1}{\textbf{end parallel for}}
+\algblockdefx[Func]{Func}{EndFunc}[1][]{\textbf{Function }}{\textbf{end Function}}
+
+\usepackage{listings}
+
+\lstset{language=C++,
+ basicstyle=\ttfamily,
+ keywordstyle=\color{azure}\ttfamily,
+ stringstyle=\color{amaranth}\ttfamily,
+ commentstyle=\color{darkgreen}\ttfamily,
+ morecomment=[l][\color{magenta}]{\#},
+ breaklines=true
+}
+
+\usepackage{xcolor}
+\definecolor{mygray}{rgb}{0.57, 0.64, 0.69}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\bolds}[1]{\boldsymbol{#1}}
+\newcommand{\bfit}[1]{\textit{\textbf{#1}}}
+
+\usepackage[a4paper, total={7.2in, 10in}]{geometry}
+
+\setcounter{section}{0}
+
+\begin{document}
+
+\begin{center} 
+\textbf{\Large Project 2} 
+\end{center}
+
+In this project, you will develop a method to find the optimal drug doses to reduce tumor burden. Our computational setup aims to mimic a Petri dish of volume $V$ containing cells (healthy and cancerous) and drug molecules. You will learn how to solve the \bfit{constrained optimization problem} on a vector of unknowns that depends on a non-trivial forward model. 
+
+\section{Setup}
+Let $g = g(t)$ denote the volume fraction of cancerous cells (which means $V g(t)$ is the total cancer cell volume) and let $f = f(t)$ the volume of drugs at time $t$, $0\leq t \leq T$, $T$ being the final time. The two constituents $g$ and $f$ evolve via the following coupled nonlinear first order ordinary differential equations:
+\begin{align}\label{eq:ode}
+\frac{\dd g}{\dd t} &= \lambda_p g (1 - g) - \lambda_a g - \lambda_k g f, \notag \\
+\frac{\dd f}{\dd t} &= -\lambda_d f + p,
+\end{align}
+where $\lambda_p$ is the proliferation rate of tumor cells (1/day), $\lambda_a$ apotosis rate (natural death rate) (1/day), $\lambda_k$ rate at which tumor cells are killed due to drugs (1/day), and $\lambda_d$ drug decay rate (1/day). Finally, $p = p(t)$ is the drug input. We consider following form of $p$:
+\begin{equation}\label{eq:drugInput}
+p(t) = \sum_{i=1}^{N_{treat}} \delta_i \frac{1}{\sigma \sqrt{2\pi}} \exp\left[ -\frac{|\tau_i - t|^2}{2\sigma^2}\right],
+\end{equation}
+where $N_{treat}$ is number of drug inputs, $\delta_i$, $i=1,2, .., N_{treat}$, the drug volume fraction added to the Petri dish, $\tau_i$, $i=1,2,..., N_{treat}$, the time of $i^{\text{th}}$ drug input (days), and $\sigma$ drug input spread time (days). Let $\bolds{\delta} = (\delta_1, \delta_2, ..., \delta_{N_{treat}})$ and $\bolds{\tau} = (\tau_1, \tau_2, ..., \tau_{N_{treat}})$.
+
+To solve the problem \eqref{eq:ode} completely, we need to define initial conditions. We consider:
+\begin{equation}\label{eq:ic}
+g(0) = g_0, \qquad f(0) = f_0 .
+\end{equation}
+
+\subsection{Constrained optimization problem}
+We will fix all parameters except $\bolds{\delta}$, and find the drug input volume fraction vector $\bolds{\delta}$ by solving the optimization problem that balances the toxic effects of drug and positive effect of reducing cancer cells. 
+
+We consider the following cost function
+\begin{equation}\label{eq:cost}
+J = J(\bolds{\delta}) = \sum_{i=1}^{N_{treat}} \delta_i^2 + a g(T) + b \int_0^T g(t) \dd t,
+\end{equation}
+where $a,b>0$ are constants that, if higher, makes reducing tumor more important and, if smaller, makes reducing toxic effects more important. In the formula for $J$, the first term accounts for the toxic effects of drugs, and the second and third term accounts for the effects of drugs on tumor cell population. Our goal is to find $\bolds{\delta}$ that minimizes $J$. 
+
+
+\vspace{10pt}
+\noindent\textit{Parameters.} Let $T = 50$ (days), $\lambda_p = 0.1$ (1/day), $\lambda_a = 0.005$ (1/day), $\lambda_k = 4$ (1/day), $\lambda_d = 0.05$ (1/day), $g_0 = 0.01$, and $f_0 = 0.001$. Also, let $N_{treat} = 4$, $\bolds{\tau} = (10, 20, 30, 40)$ (days),  $\sigma = 2$ (days),  $a = 0.0005$, and $b = 0.00005$. Another constant $c$ which will appear in the \textbf{Problem 3} is fixed to $c = 0.001$.
+
+
+\section{Problems}
+
+\noindent\textbf{Problem 1 (30 marks).} For this problem, let the drug input volume fraction vector is
+\begin{equation}
+\bolds{\delta} = (0.001, 0.001, 0.001, 0.001).
+\end{equation}
+The values of other parameters are listed in the last paragraph of a previous section. 
+
+\begin{itemize}
+\item[(i)] \bfit{Write} the discretization of \eqref{eq:ode}.
+
+\item[(ii)] Suppose we define $g^k(T)$, $0\leq k \leq 10$ ($k$ being integer), as the tumor volume fraction at final time obtained from the numerical simulation with time-step $\Delta t = 0.01*T/2^k$. Let $e^k = 100*(g^k(T) - g^{k-1}(T))/g^k(T)$, $1\leq k \leq 10$, is the relative percentage error in $g(T)$ between $k$ and $k-1$ simulations. 
+
+\bfit{Choose} integer $k_0$, $1\leq k_0 \leq 10$, such that $e^{k_0} < 1$. This $k_0$ will fix time step $\Delta t$ using $\Delta t = 0.01*T/2^{k_0}$ for the discretization of \eqref{eq:ode} in next set of problems. Provide the values of $g^k(T)$ and $e^k$ in the table for $0\leq k \leq 10$.
+\end{itemize}
+
+ 
+\vspace{10pt}
+\noindent\textbf{Problem 2 (40 marks).} Fix $\bolds{\delta}  = (0.001, 0.001, 0.001, 0.001)$ as initial guess and let other parameters fixed to the same values as in the \textbf{Problem 1}. 
+
+ \bfit{Numerically solve} the following \bfit{constrained optimization problem} to find optimal $\bolds{\delta}_{opt}$:
+\begin{equation}\label{eq:optProb}
+\min_{\substack{\bolds{\delta},\\
+0 \leq \delta_i \leq 0.01, \\
+1\leq i \leq N_{treat}}} J(\bolds{\delta}) ,
+\end{equation}
+where $J(\bolds{\delta})$ is given by \eqref{eq:cost} and depends on the solutions $g = g(t)$ and $f = f(t)$ of \eqref{eq:ode}. I.e., for a given $\bolds{\delta}$ and other parameters, you will first need to solve \eqref{eq:ode} for $g$ and $f$ and then compute $J$. Further, $\delta_i$, $i=1,2,3,4$, are constrained to be in the interval $[0, 0.01]$. 
+
+Above is a constrained optimization problem where the cost function $J$ implicitly depends on the model \eqref{eq:ode}. 
+
+Also, \bfit{plot} the functions $g$ and $f$ when $\bolds{\delta}$ was fixed to a initial guess and when fixed to the optimal $\bolds{\delta}_{opt}$ obtained from \eqref{eq:optProb}. Plot $g$ for the both cases in one plot and $f$  in the other plot. 
+
+\vspace{10pt}
+\noindent\textit{Remark 1.} I provide basic framework to solve the problem which uses Matlab function {\it fmincon} for the numerical minimization.
+
+\vspace{10pt}
+\noindent\textit{Remark 2.} In this constrained optimization problem, we call the model \eqref{eq:ode} the \bfit{forward} problem. 
+
+\vspace{10pt}
+\noindent\textbf{Problem 3 (30 marks).} We now extend the optimization problem to also find the optimal drug input time points $\bolds{\tau}$. Consider a new objective function:
+\begin{equation}
+J_{new} = J_{new}(\bolds{\delta}, \bolds{\tau}) = \sum_{i=1}^{N_{treat}} \delta_i^2 + a g(T) + b \int_0^T g(t) \dd t + c\int_0^T f(t) \dd t,
+\end{equation}
+where $c\geq 0$ is a constant that makes total drug over time either more important (when $c$ is large) or less important. Let $c = 0.001$.
+
+Fix $\bolds{\delta}_0  = (0.001, 0.001, 0.001, 0.001)$ and $\bolds{\tau}_0 = (9.7955, 19.5171, 30.6384, 40.6257)$ as initial guess and let all other parameters as before. 
+
+ \bfit{Numerically solve} the following new \bfit{constrained optimization problem} to find optimal $\bolds{\delta}_{opt, new}$ and $\bolds{\tau}_{opt, new}$:
+\begin{equation}\label{eq:optProb2}
+ \min_{\substack{\bolds{\delta}, \bolds{\tau},\\
+0 \leq \delta_i \leq 0.01, \\
+5 + 10(i-1) \leq \delta_i \leq 15 + 10(i-1), \\
+1\leq i \leq N_{treat}}} J_{new}(\bolds{\delta}, \bolds{\tau}) .
+\end{equation}
+In the above, $\delta_i$, $i=1,2,3,4$, are constrained to be in the interval $[0, 0.01]$, and $\tau_i$, $i=1,2,3,4$, are constrained to be in the intervals $[5+10(i-1), 15+10(i-1)]$.
+
+Also, \bfit{plot} the functions $g$ and $f$ when 1) $\bolds{\delta} = \bolds{\delta}_0$, $\bolds{\tau} = \bolds{\tau}_0$, 2)  $\bolds{\delta} = \bolds{\delta}_{opt}$, $\bolds{\tau} = \bolds{\tau}_{opt}$ (from the \textbf{Problem 2}), and 3) $\bolds{\delta} = \bolds{\delta}_{opt, new}$, $\bolds{\tau} = \bolds{\tau}_{opt, new}$ (from this problem).  Plot $g$ for the three cases in one plot and $f$  in the other plot. 
+
+\section{Guidelines for preparing project report} 
+Your report will have four sections in the following order:
+\begin{itemize}
+\item[1.] In this section, you will discuss the physical significance and application of the problem and general method, and what you have learned in doing this project.
+\item[2.] Answers to all the problem 1, 2, and 3. You must prepare this report such that it is self-contained. 
+\item[3.] In this section, discuss the role of different members in completing this project. Provide some specific details of individual contributions just so we know everyone in the group worked sincerely. 
+\item[4.] Attach your codes as a supplement to this report.
+\end{itemize}
+
+\section{Some hints}
+\begin{itemize}
+\item[1.] For the \textbf{Problem 1}, follow the \textbf{Assignment 1} and the class notes on the velocity problem. 
+
+\item[2.] To compute the integrals in the cost functions $J$ and $J_{new}$, you can use the Trapezoidal rule that you already used in the \textbf{Project 1}. 
+
+\item[3.] The most difficult part in this project is the numerical solution of optimization problems \eqref{eq:optProb} and \eqref{eq:optProb2}. The basic algorithm to solve, lets say the optimization problem \eqref{eq:optProb}, is as follows \textbf{(also, look at the Matlab scripts to get started)}:
+
+% Insert the algorithm
+\begin{algorithm}[h]
+	\caption{Solving the constrained optimization problem in Matlab}
+	\label{alg:optProb}
+	\begin{algorithmic}[1]
+	    \STATE \textcolor{mygray}{\it $\%$ Set parameters $T, \Delta t, \lambda_p, \lambda_a, \lambda_k, \lambda_d, g_0, f_0, N_{treat}, \sigma, a, b, c$}
+		\STATE \textcolor{mygray}{\it $\%$ Let $x$ denotes the vector of parameters we aim to optimize}
+		\STATE \textcolor{mygray}{\it $\%$ E.g., $x = \bolds{\delta}$ for \textbf{Problem 2} and $x = (\bolds{\delta}, \bolds{\tau})$ for \textbf{Problem 3}}
+		\STATE \textcolor{mygray}{\it $\%$ Set initial guess for optimization parameter $x_0 = \bolds{\delta}_0 = (0.001, 0.001, 0.001, 0.001)$}
+		\STATE \textcolor{mygray}{\it $\%$ Assume that ``params" collect all the parameters}
+		\STATE \textcolor{mygray}{\it $\%$ Define function that solves tumor model for $g$ and $f$}
+		\STATE F = F(x, params)
+		\STATE \textcolor{mygray}{\it $\%$ Define function that computes cost function $J$ given ``x" and ``params" and another function ``F" which solves tumor model}
+		\STATE J = J(x, params, F)
+		\STATE \textcolor{mygray}{\it $\%$ Fix constraints on optimization parameters (use vector to set lower and upper bounds)}
+		\STATE $x_{min} = [0, 0, 0, 0]$ and $x_{max} = [0.01, 0.01, 0.01, 0.01]$
+		\STATE \textcolor{mygray}{\it $\%$ Fix optimization parameters used by ``fmincon" function in Matlab}
+		\STATE tolx=1.e-9;  tolfun=1.e-9;  maxiter=400;
+		\STATE \textcolor{mygray}{\it $\%$ Call ``fmincon" to find the optimal parameters $x$}
+		\STATE [xopt, Jval, ~, ~, ~, ~, ~] = fmincon(J, $x_0$, [ ], [ ], [ ], [ ], $x_{min}$, $x_{max}$, [ ], `fmincon parameters')
+		\STATE \textcolor{mygray}{\it $\%$ xopt is the optimal parameters}
+		\STATE \textcolor{mygray}{\it $\%$ Use xopt and other parameters in ``params" to solve tumor model and compute functions $g$ and $f$ for plotting}
+		\STATE [gopt, fopt, t] = F(xopt, params)
+	\end{algorithmic}
+\end{algorithm}
+
+\end{itemize} 
+
+
+\end{document}

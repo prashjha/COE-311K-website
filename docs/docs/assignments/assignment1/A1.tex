@@ -1,0 +1,62 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\usepackage[a4paper, total={6.5in, 8.5in}]{geometry}
+
+\begin{document}
+
+\begin{center} 
+\textbf{Assignment 1} 
+\end{center}
+
+Consider a problem of computing the velocity of a rocket. Let $m = m(t)$ kg is the mass of rocket at time $t$ s (seconds), $0\leq t \leq t_F$. Let rocket is moving vertically upwards and $v = v(t)$ m/s is it's velocity (positive means upward velocity and negative means downward). 
+
+To increase the velocity of a rocket and overcome the forces due to earth's gravity and drag, mass is ejected from a rocket at rapid speed. Let $\dot{m}_e = \dot{m}_e(t)$ is the rate of the mass leaving the rocket at time $t$ (in units of $kg/s$). Also, suppose that the mass leaves rocket at a relative speed $v_e$ m/s. $v_e$ is negative, i.e., mass is ejected downwards (towards surface of earth) relative to the rocket, and, therefore, due to the Newton's third law, rocket moves upward (so the rocket feels the thrust).
+
+The following two equations, based on the \emph{conservation of mass} and \emph{conservation of linear momentum}, define the mass and velocity of the rocket at any time $t$, $0< t \leq t_F$,
+\begin{align}
+\frac{d m(t)}{d t} &= - \dot{m}_e(t), \label{eq:ode1} \\
+\frac{d v(t)}{d t} &= \frac{\dot{m}_e}{m(t)} (v(t) - v_e) - g - \frac{c_d}{m(t)} |v(t)| \, v(t) \label{eq:ode2}.
+\end{align}
+Initial conditions are
+\begin{equation}
+m(0) = m_0, \qquad v(0) = v_0,
+\end{equation}
+where $m_0, v_0$ are the known numbers. 
+
+While in reality the mass ejection is done in different stages, here we will consider only stage 1, and define the mass ejection rate function $\dot{m}_e$ as follows:
+\begin{equation}\label{eq:me}
+\dot{m}_e(t) = \begin{cases}
+\bar{m}, \qquad \text{if } 0 \leq t \leq \bar{t}, \\
+0, \qquad \text{otherwise} .
+\end{cases}
+\end{equation}
+Thus, we have mass ejection at a constant rate, $\bar{m}$, from $t=0$ to $t=\bar{t}$, and then no ejection.
+
+\textit{Remark 1.} The derivation of above equations is in a file supplement to this assignment file. 
+
+\textit{Parameter values.} Take $t_F = 10$ s, $m_0 = 1000$ kg, $v_0 = 0$ m/s, $\bar{m} = 100$ kg/s, $v_e = -2000$ m/s, $c_d = 0.1$ m/kg, $g = 9.81$ m/s$^2$, and $\bar{t} = 0.4 t_F$ s. Further, consider discrete times between $0$ and $t_F$ with spacing $\Delta t = 0.125$ s. 
+
+\vspace{10pt}
+
+\textbf{Problem 1 (50 marks).} Write down the numerical approximation of \eqref{eq:ode1} and \eqref{eq:ode2} (similar to the gravity problem worked out in the class but now you also have to solve for the mass), and 
+compute $m(t_F)$ and $v(t_F)$ using the parameters specified above. Also, plot the values of $m(t_i)$ and separately plot $v(t_i)$ at discrete times $t_i$ using MATLAB plot function. 
+
+\vspace{10pt}
+\textit{Remark 2.} If you take $\Delta t = 0.5$ s and all other parameters as described above, $m(t_F)$ and $v(t_F)$ will be about 600 kg and 456 m/s, respectively. This should help you in checking your code.
+
+\vspace{10pt}
+\textbf{Problem 2 (20 marks).} Run your code with four different $\Delta t = 0.5, 0.25, 0.125, 0.0625$ and list the values of $m(t_F)$ and $v(t_F)$ for each case. 
+
+\vspace{10pt}
+\textbf{Problem 3 (25 marks).} Instead of a `step' function for $\dot{m}_e$ in \eqref{eq:me}, try another function, say a function that linearly increases from $0$ to $\bar{m}$ from time $0$ to $\bar{t}$, and, for time above $\bar{t}$, $\dot{m}_e(t) = 0$. Using either the new function I just described or your own new function for $\dot{m}_e$, compute $m(t_F)$ and $v(t_F)$ with parameters listed above and with $\Delta t = 0.125$. Compare with the result for the `step' function.
+
+\vspace{10pt}
+\textbf{Problem 4 (5 marks).} In our derivation of \eqref{eq:ode2}, we assumed that the rocket is always vertical. Comment on what may change if suppose the rocket is at a fixed angle $\theta$ from the vertical direction (so if $\theta = 0$ degrees, the rocket will be vertical). (Hint: something to do with the gravity force.)
+ 
+\end{document}

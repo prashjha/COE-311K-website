@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cleveref}
+
+\newcommand{\dd}{\mathrm{d}}
+
+\usepackage[a4paper, total={7in, 9.5in}]{geometry}
+
+\begin{document}
+
+\begin{center} 
+\textbf{Assignment 2 -- Hints} 
+\end{center}
+
+
+\vspace{10pt}
+\noindent\textbf{1. Symbolic calculation in matlab (for problem 1)}
+  \begin{verbatim}
+% matlab script file
+% declare math variable x in matlab
+syms x
+% define function qext
+qext(x) = 12*x^2 + cos(5*x) + 100*x*sin(10*x);
+disp('external heat function')
+qext
+% integrate qext function
+Q1(x) = int(qext, 0, x);
+disp('Q1 function')
+Q1
+% integrate Q1 function
+Q2(x) = int(Q1, 0, x);
+disp('Q2 function')
+Q2
+% get value of Q2 function at x = 1
+disp('vaue of Q2 function at x = 1')
+eval(Q2(1))
+  \end{verbatim}
+
+\vspace{10pt}
+\noindent\textbf{2. Multiple plots with labels (for problem 1)}
+  \begin{verbatim}
+% matlab script file
+% get discrete points to plot functions
+x = 0:0.01:1; 
+qext = @(x) 12*x.^2 + cos(5*x) + 100*x.*sin(10*x); 
+Q2 = @(x) x.^4 - x.*sin(10*x) -2*cos(5*x).*cos(5*x)/5 - cos(5*x)/25 + 11/25 ;
+% exact solution
+T = @(x) 100*x + ...; % complete this formula
+% use 'DisplayName' to assign label to curve
+plot(x, qext(x), 'r+', 'DisplayName', 'External heat') 
+hold on
+plot(x, T(x), 'bo', 'DisplayName', 'Temperature')
+hold on
+y1 = 0*x + 80; % line y = 80 
+y2 = 0*x + 40; % line y = 40
+plot(x, y1, 'g', 'DisplayName', 'Line y = 80')
+hold on
+plot(x, y2, 'k', 'DisplayName', 'Line y = 40')
+legend() % this line tells matlab to add labels to the curve
+  \end{verbatim}
+  
+\vspace{10pt}
+\noindent\textbf{3. Roots problem.} In \textbf{Problem 1}, you will plot the functions $T(x)$ and the horizontal lines $y=80$ and $y=40$. Look at the plot and find the $x$ at which $T$ and $y=80$ lines intersect; this should help you in verifying your results for \textbf{Problem 2}. Similarly, find $x$ at which $T$ and $y=40$ intersect; this should help you in verifying results for \textbf{Problem 3}. 
+
+To check your results in \textbf{Problem 4}, look at the plot for $T$ and locate graphically the point $x$ at which function $T$ is maximum. 
+
+\vspace{10pt}
+\noindent\textbf{4. Derivative of the temperature function} can be computed from the exact solution $T(x) = 100 x + 200 x Q_2(1) - 200 Q_2(x)$. We will have
+\begin{equation}
+\frac{\dd T(x)}{\dd x} = 100 + 200 Q_2(1) - 200 Q_1(x),
+\end{equation}
+where we used the fact that, since $Q_2(x) = \int_0^x Q_1(y) \dd y$, $\dd Q_2(x) / \dd x = Q_1(x)$. 
+
+
+\end{document}

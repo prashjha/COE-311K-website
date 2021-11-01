@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Assignment 3 #  Exercise on Eigenvalue-Eigenvector problem. We consider two applications: spring-mass system with three mass and 6 springs (three 2nd order ODEs) and mixing of two constituents (two 1st order ODEs).
+Links #   Problem: A3.pdf, (Latex files - A3.tex) Derivation of equations for spring-mass system: derivation Solution and matlab script (TBA)  ">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://prashjha.github.io/COE-311K-website/docs/assignments/assignment3/" />
+
+<title>Assignment3 | COE 311K</title>
+<link rel="manifest" href="/COE-311K-website/manifest.json">
+<link rel="icon" href="/COE-311K-website/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/COE-311K-website/book.min.958cea7827621d6fbcb3acf091344c3e44e3d2a9428f9c3c38bb9eb37bf8c45d.css" integrity="sha256-lYzqeCdiHW&#43;8s6zwkTRMPkTj0qlCj5w8OLues3v4xF0=" crossorigin="anonymous">
+  <script defer src="/COE-311K-website/flexsearch.min.js"></script>
+  <script defer src="/COE-311K-website/en.search.min.df4538113d5dbd32712bcd3fe38d822ba923f6e7e06235b1e3d189aa23455397.js" integrity="sha256-30U4ET1dvTJxK80/442CK6kj9ufgYjWx49GJqiNFU5c=" crossorigin="anonymous"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-132780463-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<link rel="alternate" type="application/rss+xml" href="https://prashjha.github.io/COE-311K-website/docs/assignments/assignment3/index.xml" title="COE 311K" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a href="/COE-311K-website/"><span>COE 311K</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://prashjha.github.io/" target="_blank" rel="noopener">
+        Prashant&#39;s Homepage
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/syllabus/" class="">Syllabus</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/syllabus/grading/" class="">Grading</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/" class="">Lectures</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture1/" class="">Lecture1</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture2/" class="">Lecture2</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture3/" class="">Lecture3</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture4/" class="">Lecture4</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture5/" class="">Lecture5</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture6/" class="">Lecture6</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture7-8/" class="">Lecture7 8</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture9/" class="">Lecture9</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture10/" class="">Lecture10</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture11/" class="">Lecture11</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture12/" class="">Lecture12</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture13/" class="">Lecture13</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture14/" class="">Lecture14</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture15/" class="">Lecture15</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture16/" class="">Lecture16</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture17/" class="">Lecture17</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture18/" class="">Lecture18</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture19/" class="">Lecture19</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture20-21/" class="">Lecture20 21</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture22/" class="">Lecture22</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture23/" class="">Lecture23</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture24/" class="">Lecture24</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture25/" class="">Lecture25</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/lectures/lecture26/" class="">Lecture26</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/assignments/" class="">Assignments</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/assignments/assignment1/" class="">Assignment1</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/assignments/assignment2/" class="">Assignment2</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/assignments/assignment3/" class=" active">Assignment3</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/projects/" class="">Projects</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/projects/project1/" class="">Project1</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <a href="https://prashjha.github.io/COE-311K-website/docs/finals/" class="">Final Exam</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/COE-311K-website/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Assignment3</strong>
+
+  <label for="toc-control">
+    
+    <img src="/COE-311K-website/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="assignment-3">
+  Assignment 3
+  <a class="anchor" href="#assignment-3">#</a>
+</h1>
+<p>Exercise on Eigenvalue-Eigenvector problem. We consider two applications: spring-mass system with three mass and 6 springs (three 2nd order ODEs) and mixing of two constituents (two 1st order ODEs).</p>
+<h1 id="links">
+  Links
+  <a class="anchor" href="#links">#</a>
+</h1>
+<ol>
+<li>Problem: <a href="A3.pdf">A3.pdf</a>, (Latex files - <a href="A3.tex">A3.tex</a>)</li>
+<li>Derivation of equations for spring-mass system: <a href="A3_derivation_spring_system.pdf">derivation</a></li>
+<li>Solution and matlab script (TBA)</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
