@@ -88,25 +88,27 @@ u(T) = [0.2165, 0.1931, 0.1138, 0.1138]^T .
 rho = max (abs(eig(I + \Delta t A))) .
 \end{equation}
 
-For a simple ODE $\dd v / \dd t = -\lambda v$ with a positive number $\lambda$,  {\it forward Euler} is unstable if $|1 - \Delta t \lambda | > 1$ and stable if $\Delta t$ is such that $|1 - \Delta t \lambda | \leq 1$. Thus, {\it forward Euler} is stable as long as $\Delta t \leq 2/\lambda$. As you can see, when $\lambda$ is large, one needs to have small $\Delta t$ to keep the {\it forward Euler} stable. On the other hand, {\it backward Euler} is stable as long as $\frac{1}{|1 + \Delta \lambda|} \leq 1$ which is satisfied for any positive $\Delta t$, i.e., for any $\Delta t$, {\it backward Euler} is stable. In certain situations {\it backward Euler} can compute solutions faster by taking large $\Delta t$.
+For a simple ODE $\dd v / \dd t = -\lambda v$ with a positive number $\lambda$,  {\it forward Euler} is unstable if $|1 - \Delta t \lambda | > 1$ and stable if $\Delta t$ is such that $|1 - \Delta t \lambda | \leq 1$. Thus, {\it forward Euler} is stable as long as $\Delta t \leq 2/\lambda$. As you can see, when $\lambda$ is large, one needs to have small $\Delta t$ to keep the {\it forward Euler} stable. On the other hand, {\it backward Euler} is stable as long as $\frac{1}{|1 + \Delta t \lambda|} \leq 1$ which is satisfied for any positive $\Delta t$, i.e., for any $\Delta t$, {\it backward Euler} is stable. In certain situations {\it backward Euler} can compute solutions faster by taking large $\Delta t$.
 \end{itemize}
 
 \section{Problem set 2 (35 marks)}
-Consider a composite bar in Figure \ref{fig:bar} of length $L$. We are interested in modeling temperature in this bar as a function of position on the bar and time. Let $h = h(t, x)$ be the temperature in bar at point $x$, $0\leq x \leq L$, and time $t$, $0 \leq t \leq T$. 
+Consider a composite bar in Figure \ref{fig:bar} of length $L$. We are interested in modeling temperature in this bar as a function of position on the bar and time. Let $h = h(t, x)$ be the temperature in bar at point $x$, $0\leq x \leq L$, and time $t$, $0 \leq t \leq T$. The left end is at $x=0$ and the right end is at $x=L = L_1 + L_{12}+L_2$.
 
 The temperature field $h$ satisfies the following one-dimensional heat (or diffusion) partial differential equation, for all $0 \leq t \leq T$ and $0\leq x \leq L$,
 \begin{equation}\label{eq:pde}
 \frac{\p}{\p t} h(t, x) = k(x) \frac{\p^2 }{\p x^2} h(t, x) + q_{ext}(t, x),
 \end{equation}
-where $\frac{\p}{\p t} h(t, x)$ is the partial derivative of $h$ with respect to $t$, similarly $\frac{\p}{\p x} h(t, x)$ is the partial derivative with respect to $x$, $k = k(x)$ is the thermal conductivity coefficient as a function of $x$, $q_{ext} = q_{ext}(t, x)$ external source. Because the bar is composite, we consider thermal conductivity $k$ as a function of $x$. We consider $k$ as a following function (notice how this function is related to bar in Figure \ref{fig:bar})
+where $\frac{\p}{\p t} h(t, x)$ is the partial derivative of $h$ with respect to $t$, similarly $\frac{\p}{\p x} h(t, x)$ is the partial derivative with respect to $x$, $k = k(x)$ is the thermal conductivity coefficient as a function of $x$, $q_{ext} = q_{ext}(t, x)$ external source. 
+
+Because the bar is composite, we consider thermal conductivity $k$ as a function of $x$. We consider $k$ as a following function (notice how this function is related to bar in Figure \ref{fig:bar})
 \begin{align}\label{eq:cond}
 k(x) = \begin{cases}
 k_1, & \qquad \text{if } x \leq L_1, \\
-k_2, & \qquad \text{if } x \geq L_2, \\
+k_2, & \qquad \text{if } x \geq L_1+L_{12}, \\
 k_1 + (k_2 - k_1)\frac{(x - L_1)}{L_{12} }, &\qquad \text{otherwise}.
 \end{cases}
 \end{align}
-In the above, $k$ goes to $k_1$ at $x \leq L_1$ to $k_2$ at $x \geq L_2$ linearly over the length $L_{12}$. We fix $L_{12} = 0.1$ and keep $L_1$ and $L_2$ as flexible. Note that since $L_1 + L_2 + L_{12} = L$, if $L$ and $L_{12}$ are fixed, only one of the two, $L_1$ or $L_2$, will be independent. 
+In the above, $k$ goes to $k_1$ at $x \leq L_1$ to $k_2$ at $x \geq L_1+L_{12}$ linearly over the length $L_{12}$. We fix $L_{12} = 0.1$ and keep $L_1$ and $L_2$ as flexible. Note that since $L_1 + L_2 + L_{12} = L$, if $L$ and $L_{12}$ are fixed, only one of the two, $L_1$ or $L_2$, will be independent. 
 
 We also consider the following external source
 \begin{equation}\label{eq:qext}
@@ -140,9 +142,9 @@ Let $\Delta x$ be the mesh size such that $x_1 = 0, x_2 = \Delta x, x_3 = 2\Delt
 \begin{itemize}
 \item[(i)] \bfit{Obtain} the system of the first order ODE from \eqref{eq:pde} (through approximation of $\p^2 h(t, x_i)/ \p x^2$) of the form:
 \begin{equation}\label{eq:pdeDisc}
-\frac{\p}{\p t} H(t) = A H(t) + Q_{ext} (t),
+\frac{\dd}{\dd t} H(t) = A H(t) + Q_{ext} (t),
 \end{equation}
-where $H(t) = [H_2(t), H_3(t), ..., H_{N_x + 1}(t)]^T$ is the $N_x \times 1$ vector of function of temperature at points $x_2, x_3, ..., x_{N_x + 1}$, $A$ is the $N_x \times N_x$ matrix, $Q_{ext} = Q_{ext}(t)$ is the vector of function. \bfit{Provide} the structure of matrix $A$ and $Q_{ext}$ for general $\Delta x$. 
+where $H(t) = [H_2(t), H_3(t), ..., H_{N_x + 1}(t)]^T$ is the $N_x \times 1$ vector of function of temperature at points $x_2, x_3, ..., x_{N_x + 1}$, $A$ is the $N_x \times N_x$ matrix, $Q_{ext} = Q_{ext}(t)$ is the vector of function. \bfit{Provide} the structure of matrix $A$ and $Q_{ext}$ for general $\Delta x$.  Note that in above I have used $\dd H_(t) / \dd t$ because vector function $H$ is just a function of $t$.
 
 \bfit{Note} that matrix $A$ will be familiar to you. However, in this problem because of the boundary condition $\p h(t, L) / \p x = 0$, the matrix $A$ will be slightly different. Follow the hints.  
 
@@ -168,7 +170,7 @@ where the new term $c$ is the convection velocity. We let $c = 0.001$.
 \begin{itemize}
 \item[(i)] As in the problem 2, discretize the bar with discrete points $x_1 = 0, x_2 = \Delta x, ..., x_{N_x + 1} = N_x \Delta x$. \bfit{Convert} \eqref{eq:pde2} into the system of ordinary differential equation of type (through approximation of $\p^2 h(t, x_i)/ \p x^2$ and $\p h(t, x_i)/\p x$):
 \begin{equation}\label{eq:pdeDisc2}
-\frac{\p}{\p t} H(t) = A H(t) + Q_{ext} (t).
+\frac{\dd }{\dd t} H(t) = A H(t) + Q_{ext} (t).
 \end{equation}
 In this case, \bfit{what} is the matrix $A$? Use the {\it forward difference} to approximate $\p h(t, x_i)/\p x$. 
 
@@ -223,7 +225,23 @@ In developing a numerical method for PDE
 \begin{equation}\label{eq:pdeHelp}
 \frac{\p}{\p t} h(t, x) = k(x) \frac{\p^2 }{\p x^2} h(t, x) + q_{ext}(t, x),
 \end{equation}
-you will need to approximate the term  $\frac{\p^2 }{\p x^2} h(t, x_i)$ at some discrete point $x_i$ for given $t$. For interior point $x_i$, i.e., $i=2, 3, ..., N_x$ (except $i=1$ and $i=N_x + 1$), you can use the central-difference formula as follows:
+you will need to approximate the term  $\frac{\p^2 }{\p x^2} h(t, x_i)$ at some discrete point $x_i$ for given $t$. 
+
+\paragraph{Definition of partial derivatives}
+We note how partial derivatives are defined to construct an approximation. We have:
+\begin{align}
+\frac{\p}{\p t} h(t, x) &= \lim_{a \to 0} \frac{h(t + a, x) - h(t,x)}{a} = \lim_{a \to 0} \frac{h(t, x) - h(t-a,x)}{a} = \lim_{a \to 0} \frac{h(t + a, x) - h(t-a,x)}{2a}, \notag\\
+\frac{\p}{\p x} h(t, x) &= \lim_{a \to 0} \frac{h(t , x+a) - h(t,x)}{a} = \lim_{a \to 0} \frac{h(t, x) - h(t, x - a)}{a} = \lim_{a \to 0} \frac{h(t, x+a) - h(t,x-a)}{2a}
+\end{align}
+and
+\begin{align}
+\frac{\p^2}{\p x^2} h(t, x) &= \lim_{a \to 0} \frac{\frac{\p}{\p x} h(t, x+a) - \frac{\p}{\p x} h(t, x)}{a} = \lim_{a \to 0} \frac{\frac{\p}{\p x} h(t, x) - \frac{\p}{\p x} h(t, x-a)}{a} \notag \\
+&= \lim_{a \to 0} \frac{\frac{\p}{\p x} h(t, x+a) - \frac{\p}{\p x} h(t, x-a)}{2a}.
+\end{align}
+For the exterior points $x = 0$ and $x=L$ (and also $t=0$ and $t=T$), one of these formula will not be valid if $x-a$ or $x+a$ is outside the domain of function $[0,L]$ (similarly, if $t-a$ or $t+a$ is outside $[0,T]$). The idea is that to get partial derivative with respect to one variable, we fix all other variables and change only one variable for which partial derivative is computed.
+
+\paragraph{Approximation of partial derivatives}
+For interior point $x_i$, i.e., $i=2, 3, ..., N_x$ (except $i=1$ and $i=N_x + 1$), you can use the central-difference formula as follows:
 \begin{equation}
 \frac{\p^2 }{\p x^2} h(t, x_i) \approx \frac{h(t, x_{i+1}) - 2h(t, x_i) + h(t, x_{i-1})}{\Delta x^2},
 \end{equation}
