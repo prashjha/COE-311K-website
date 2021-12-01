@@ -1,0 +1,135 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cleveref}
+
+\usepackage{enumitem}
+%\setlist[itemize]{nosep,left=0pt}
+\setlist[itemize]{left=5pt}
+\setlist[enumerate]{left=5pt}
+\setlist[description]{left=5pt}
+
+%\usepackage{algorithm}
+% \usepackage{algpseudocode}
+\usepackage[ruled]{algorithm2e}
+\usepackage{algcompatible}
+\algblockdefx[Hloop]{Hloop}{EndHloop}[1][]{\textbf{hpx::parallel::for$\_$loop} #1}{\textbf{end parallel for}}
+\algblockdefx[Func]{Func}{EndFunc}[1][]{\textbf{Function }}{\textbf{end Function}}
+
+\usepackage{listings}
+
+\lstset{language=C++,
+ basicstyle=\ttfamily,
+ keywordstyle=\color{azure}\ttfamily,
+ stringstyle=\color{amaranth}\ttfamily,
+ commentstyle=\color{darkgreen}\ttfamily,
+ morecomment=[l][\color{magenta}]{\#},
+ breaklines=true
+}
+
+\usepackage{xcolor}
+\definecolor{mygray}{rgb}{0.57, 0.64, 0.69}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\p}{\partial }
+\newcommand{\bolds}[1]{\boldsymbol{#1}}
+\newcommand{\bfit}[1]{\textit{\textbf{#1}}}
+
+\usepackage[a4paper, total={7in, 9.5in}]{geometry}
+
+\newcommand{\bmatx}[1]{\begin{bmatrix}
+    #1
+\end{bmatrix}}
+
+\setcounter{section}{0}
+
+\begin{document}
+
+\begin{center} 
+\textbf{\Large Assignment 5} 
+\end{center}
+
+\noindent\textit{Remark 1.} The first 15 questions carry equal weights and are total worth 40 marks.
+
+\noindent\textit{Remark 2.} This assignment is only for those who need to improve their grades. 
+
+\begin{enumerate}
+\item Name the primary sources of error in numerical methods. Describe them briefly.
+
+\item What is the use of Gaussian elimination? 
+
+\item Name the two basic steps of Gaussian elimination.  Shortly describe what they do.
+
+\item Characterize the Jacobi and the Gauss-Seidel method in contrast to Gaussian elimination.
+
+\item What is the main difference between the Jacobi and the Gauss-Seidel method?
+
+\item How do you solve a linear system given in terms of a coefficient matrix $A$ and a right-hand side vector $b$ using \texttt{MATLAB} with one line of code?
+
+\item What is an Eigenvalue problem?
+
+\item For roots problem, what is the rate of convergence of Newton's method and fixed-point iteration method?
+
+\item Write down Newton's method for finding the root of a function $f(x)$.
+
+\item Explain with a short sketch what happens during one iteration of Newton's method.
+
+\item Name the two differences between Gauss quadrature and piecewise polynormial approximation (e.g., Trapezoidal and Simpson's 1/3rd rules) of integration.
+
+\item You are given a $n$-point Gauss quadrature rule to integrate a polynomial function $f(x)$. Up to what degree $p$ of polynomials does the Gauss quadrature method yield the exact integral?
+
+\item Which one of the two, Simpson's 1/3rd and 3/8th, require number of data points to be odd?
+
+\item Use a Taylor series expansion at a given point $x_i$ to predict the function value at a point $x_{i+1} = x_i + h$. Truncate the series after the third derivative term.
+
+\item For the above Taylor series expansion, what is the order of the truncation error in terms of $h$?
+
+\item \textbf{Numerical integration (20 marks).} Let
+\[
+I = \int_{-2}^4 (1 - x - 4x^3 + 2x^5)\,\mathrm{d}x .
+\]
+\bfit{Approximate} $I$ using
+\begin{itemize}
+\item[(a)] single application of trapezoidal rule,
+\item[(b)] composite application of trapezoidal rule with $n=2$ and, separately,  $n=4$ subintervals,
+\item[(c)] two-point Gauss quadrature rule.
+\end{itemize}
+
+\item \textbf{Numerical differentiation (20 marks).} A jet fighter's position on an aircraft carrier's runway was timed during landing:
+\begin{center}
+\begin{tabular}{llllll}
+\hline
+$t$, s \quad &0.0 &0.5 &1.0 &2.0 &3.0  \\
+$x$, m \quad &150 &158 &200 &225 &262 \\
+\hline
+\end{tabular}
+\end{center}
+where $x$ is the distance from the end of the carrier.
+\begin{itemize}
+\item[(a)] \bfit{Estimate} the velocity and acceleration of the aircraft at $t=2\,\text{s}$ using the first and second order centered finite difference formulas, respectively.
+
+\item[(b)] \bfit{Estimate} the velocity and acceleration of the aircraft at $t=1\,\text{s}$ using a quadratic Lagrange polynomial fitted to three adjacent points at $t=0.5$, $1.0$ and $2.0\,\text{s}$. 
+\end{itemize}
+
+\item \textbf{Solving IVP-ODE (20 marks).} Consider the initial value problem
+\begin{align} \label{eqn:ivp2}
+y'(t) = y(t) + 4t\\
+y(t=0) = 0 .
+\end{align}
+
+We want to find $n$ discrete solutions $y$ at uniformly-spaced points in time, $t_i$, in the time interval $\left[0,1\right]$. 
+
+\begin{itemize}
+\item[(a)] \bfit{Provide} the forward Euler approximation for \eqref{eqn:ivp2},
+\item[(b)] \bfit{Implement} forward Euler approximation and solve the problem using time step $\Delta t = 0.01$ and $\Delta t = 0.001$. \bfit{Plot} the approximate function $y$ for both time steps. 
+\end{itemize}
+
+\end{enumerate}
+
+
+\end{document}

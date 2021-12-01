@@ -1,0 +1,222 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{cleveref}
+
+\usepackage{enumitem}
+%\setlist[itemize]{nosep,left=0pt}
+\setlist[itemize]{left=5pt}
+\setlist[enumerate]{left=5pt}
+\setlist[description]{left=5pt}
+
+%\usepackage{algorithm}
+% \usepackage{algpseudocode}
+\usepackage[ruled]{algorithm2e}
+\usepackage{algcompatible}
+\algblockdefx[Hloop]{Hloop}{EndHloop}[1][]{\textbf{hpx::parallel::for$\_$loop} #1}{\textbf{end parallel for}}
+\algblockdefx[Func]{Func}{EndFunc}[1][]{\textbf{Function }}{\textbf{end Function}}
+
+\usepackage{listings}
+
+\lstset{language=C++,
+ basicstyle=\ttfamily,
+ keywordstyle=\color{azure}\ttfamily,
+ stringstyle=\color{amaranth}\ttfamily,
+ commentstyle=\color{darkgreen}\ttfamily,
+ morecomment=[l][\color{magenta}]{\#},
+ breaklines=true
+}
+
+\usepackage{xcolor}
+\definecolor{mygray}{rgb}{0.57, 0.64, 0.69}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\p}{\partial }
+\newcommand{\bolds}[1]{\boldsymbol{#1}}
+\newcommand{\bfit}[1]{\textit{\textbf{#1}}}
+
+\usepackage[a4paper, total={7in, 9.5in}]{geometry}
+
+\newcommand{\bmatx}[1]{\begin{bmatrix}
+    #1
+\end{bmatrix}}
+
+\setcounter{section}{0}
+
+\begin{document}
+
+\begin{center} 
+\textbf{\Large Assignment 4} 
+\end{center}
+
+\section{Problems}
+
+\noindent\textbf{Problem 1 (30 marks).} \textit{(Example of curve-fitting).} Consider a second order ODE for $u = u(t)$, for $0\leq t \leq T$,
+\begin{equation}\label{eq:ode}
+m\frac{\dd^2 u}{\dd t^2} + c \frac{\dd u}{\dd t} + k u = 0
+\end{equation}
+with initial conditions
+\begin{equation}
+u(0) = u_0, \qquad \frac{\dd u}{\dd t}(0) = \dot{u}_0. 
+\end{equation}
+Consider $T = 10, m = 1, c= 0.05, k=0.75, u_0 = 0, \dot{u}_0 = 1$ and take $\Delta t = 0.001$ or smaller for numerical method. Above ODE is frequently encountered when modeling a spring-dashpot system. Specifically, $m$ is the mass attached to the spring, $k$ is the stiffness of spring, and $c$ is the damping coefficient of the dashpot. 
+
+\begin{itemize}
+\item[(i)] \bfit{Implement} a numerical method to solve \eqref{eq:ode} numerically using both methods described in the hints. \bfit{Plot} the solutions from both methods. 
+\item[(ii)] We want to develop a simple model of \eqref{eq:ode} using curve-fitting such that for a given stiffness $k$, we can predict the displacement $u(T)$ at final time $T$. We also want to take into account the uncertainty in the initial condition in developing our predictive model. 
+
+Consider different values of stiffness: $k_1 = k, k_2 = k + \Delta k, k_3 = k + 2\Delta k, ..., k_{N_k + 1} = k + N_k \Delta k$ with $k = 0.75$, $\Delta k = 0.01$, and $N_k = 50$ so the lower and upper value of $k$ are $0.75$ and $1.25$, respectively. Also, let initial condition is probabilistic and given by $u_0 = \mathcal{N}(0, \sigma)$, where $\mathcal{N}(\mu, \sigma)$ is the Gaussian probability distribution function with mean $\mu$ and standard deviation $\sigma$. Let $\sigma = 0.1$. 
+
+For each $i=1, 2, .., N_k + 1$, let $k_i$ is the stiffness of spring. Consider 10 samples of initial condition $u_0$ from Gaussian distribution $\mathcal{N}(0, \sigma)$. Using $u_0$ and $k_i$, \bfit{solve} \eqref{eq:ode} and \bfit{record} value of $u(T)$ for $k_i$. 
+
+\bfit{Provide} table where the first column is different stiffness $k_i$, $i=1,2,...$, and the second column is $u(T)$ using the stiffness $k_i$. Clearly, we will have 10 different values of $u(T)$ for each $k_i$ because we consider 10 different samples of initial condition $u_0$. 
+
+\item[(iii)] \bfit{Plot} the tabular data in Matlab where stiffness and displacement are in the x and y-axis, respectively. From the plot, \bfit{explain} what type of curve-fitting (regression or interpolation) is preferred to obtain a function $f = f(k)$ which gives displacement $u(T)$ for a given $k$? 
+
+\item[(iv)] \bfit{Perform} curve-fitting using the method selected in (iii). For the fitting curve, you can choose either polynomial or sinusoidal basis functions. Try different number of basis functions to see you have a good curve fit.
+
+\bfit{Plot} the fitted curve in the same plot where you have plotted the data in (iii). 
+
+\item[(v)] \bfit{Provide} prediction of $u(T)$ using fitted curve in (iv) as well as the actual value of $u(T)$ by solving the ODE \eqref{eq:ode} with $u_0 = 0$ for the following values of $k$:
+\begin{equation*}
+0.65, 0.71, 0.83, 0.96, 1.02, 1.09, 1.17, 1.26, 1.34 .
+\end{equation*}
+\bfit{Provide} the values in the table where the first column is stiffness $k$, second column is $u(T)$ predicted from the fitted curve, third column is $u(T)$ by solving \eqref{eq:ode} with $u_0 = 0$, and the last column is the error in predicted value and computed value of $u(T)$. 
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{Problem 2 (20 marks).} \textit{(Example of linear regression using nonlinear basis functions).} Consider three chemicals in seawater. Each chemical decays at different rates, say, $1.5, 0.3, 0.05$, respectively, in seawater. The total amount of chemical at a given time $t$ is the sum of the three chemicals:
+\begin{equation}
+u(t) = A \exp[-1.5t]  + B \exp[-0.3 t] + C \exp[-0.05t],
+\end{equation}
+where $A, B, C$ is the amount of the three chemicals initially. 
+
+Using the following data
+\begin{align*}
+\bmatx{t & 0.5 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 9 \\
+u(t) & 6 & 4.4 & 3.2 & 2.7 & 2 & 1.9 & 1.7 & 1.4 & 1.1} 
+\end{align*}
+\bfit{compute} values of $A, B, C$ using the linear regression (least-squared linear regression method). 
+
+\vspace{10pt}
+\noindent\textbf{Problem 3 (20 marks).} \textit{(Polynomial interpolation).} \bfit{Implement} Matlab code that given $n$ number of paired data $(x_i, y_i)$, computes $(n-1)$-th order polynomial using the three methods we have learned in the class: \textit{direct polynomial interpolation}, \textit{Newton's polynomial interpolation}, and \textit{Lagrange's polynomial interpolation}. 
+
+Particularly, \bfit{use} your polynomial interpolation codes to fit a second order polynomial to the following three paired data:
+\begin{equation*}
+(-2, 4), \quad (0, 2), \quad (2, 8).
+\end{equation*}
+\bfit{Provide} values of coefficients in the three methods and \bfit{plot} the resulting polynomial. 
+
+\vspace{10pt}
+\noindent\textbf{Problem 4 (20 marks).} \textit{(Runge's phenomenon).} \bfit{Interpolate} the function
+\begin{equation} \label{eqn:runge}
+f(x) = \frac{1}{1+25x^2}
+\end{equation}
+with a tenth-order polynomial in the interval $[-1,1]$ using 
+\begin{itemize}
+\item[(a)] eleven equally spaced points,
+\item[(b)] and the so called \emph{Chebysev points} $x_i = \cos\left(\frac{2i-1}{11}\frac{\pi}{2}\right), \quad i = 1,\ldots,11$ .
+\end{itemize}
+Use the Matlab built-in functions \texttt{polyfit} and \texttt{polyval} (more details in hints). \bfit{Plot} the results together with the original function in the same figure.
+
+\vspace{10pt}
+\noindent\textbf{Problem 5 (10 marks).} \textit{(Gauss quadrature integration method).} Recall that Trapezoidal and Simpson's 1/3rd and 3/8th (or, generally, methods based on piecewise interpolation) rules for approximation of integral 
+\begin{equation}
+I[f] = \int_a^b f(x) \dd x
+\end{equation}
+are applied when the values of function $f(x_i)$ is provided at pre-specified discrete points $x_i$ (often uniformly-spaced points). On the other hand, if we had a flexibility of choosing points $x_i$, we can have a method that uses few points and is more accurate than the previous methods. Gauss quadrature (also called Gauss-Legendre) method and Richardson's extrapolation are two such methods.
+
+Consider $a = 0, b = 3$ and $f = f(x) = x e^{1.5x}$.\bfit{Compute} the integration $I[f]$ exactly. Also, \bfit{compute} the approximation of $I[f]$ denoting $\hat{I}[f]$ using two and three-point Gauss quadrature method. For both two and three points method, \bfit{compute} the true percentage error $100*(I[f] - \hat{I}[f])/I[f]$.
+
+
+\section{Hints}
+\noindent\textbf{1. Solving second order ODE.} Notice that we can convert the second order ODE
+\begin{equation*}
+m\frac{\dd^2 u}{\dd t^2} + c \frac{\dd u}{\dd t} + k u = 0
+\end{equation*}
+into two first order ODEs for displacement $u = u(t)$ and velocity $\dd u / \dd t = v(t)$ as follows
+\begin{align}\label{eq:ode2}
+\frac{\dd u}{\dd t} &= v, \notag \\
+\frac{\dd v}{\dd t} &= f(u, v),
+\end{align}
+where $f(u, v) = -\frac{c}{m} v - \frac{k}{m} u$. We also have two initial conditions
+\begin{equation*}
+u(0) = u_0, \qquad v(0) = \dot{u}_0 .
+\end{equation*}
+
+ Let $t_1 = 0, t_2 = \Delta t, t_3 = 2 \Delta t, ..., t_{N_t + 1} = N_t \Delta t$ are discrete times. There are several methods to solve the above two coupled first order ODEs. Here we list two which are used very frequently:
+\begin{itemize}
+\item[1] \textit{Forward Euler method.} Applying forward difference approximation to \eqref{eq:ode2}, we get following numerical method, for $i=1, 2, .., N_t$,
+\begin{align}
+u(t_{i+1}) &= u(t_i) + \Delta t v(t_i), \notag \\
+v(t_{i+1}) &= v(t_i) + \Delta t f(u(t_i), v(t_i))  ,
+\end{align}
+where $f(u, v) = -\frac{c}{m} v - \frac{k}{m} u$. 
+
+\item[2] \textit{Velocity-Verlet method.} We first compute velocity at mid point $t_{i+1/2} = t_i + 0.5\Delta t$ and use this velocity to compute the displacement at $t_{i+1}$. Using the displacement at $t_{i+1}$, we can compute the velocity at $t_{i+1}$. Algorithm is as follows:
+\begin{align}
+\text{(velocity at mid-point)} & \quad v(t_{i+1/2}) = v(t_i) + 0.5\Delta t f(u(t_i), v(t_i)), \notag \\
+\text{(displacement at next point)} & \quad u(t_{i+1}) = u(t_i) + \Delta t v(t_{i+1/2}), \notag \\
+\text{(velocity at new point)} & \quad v(t_{i+1}) = v(t_{i+1/2}) + 0.5\Delta t f(u(t_{i+1}), v(t_{i+1/2})) .
+\end{align}
+
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{2. Sampling from Gaussian distribution in Matlab.} In Matlab, you can use \texttt{randn} function to sample from the {\it Normal} distribution $\mathcal{N}(0, 1)$. (Note that Normal distribution is a Gaussian distribution $\mathcal{N}(\mu, \sigma)$ with mean $\mu = 0$ and standard deviation $\sigma = 1$. 
+
+In \textbf{Problem 1}, you need to get samples from Gaussian distribution $\mathcal{N}(0, \sigma)$ where $\sigma = 0.1$. You can do get one sample using \texttt{sigma = 0.1; x\_sample = sigma*randn(1,1)}. Or you can extract all 10 samples in one go using \texttt{sigma = 0.1; x\_samples = sigma*randn(10,1)}. To know more about \texttt{randn}, use Matlab \texttt{help randn}.
+
+\vspace{10pt}
+\noindent\textbf{3. Linear regression and interpolation in Matlab} Given a vector of points \texttt{x} and data values \texttt{y}, use \texttt{p = polyfit(x, y, n)} with \texttt{n = 10}  (order of polynomial) to get the polynomial interpolation. Note that if the order of polynomial \texttt{n} is exactly equal to \texttt{length(x) - 1} then \texttt{polyfit} performs polynomial interpolation. And if \texttt{n < length(x) - 1} it performs the linear regression using $n$-th order polynomial. 
+
+You can evaluate the polynomial function at any points. Suppose \texttt{z} is the vector of points at which we want to evaluate polynomial function. We can write in Matlab \texttt{yz = polyval(p, z)}, where \texttt{p} is from \texttt{p = polyfit(x, y, n)}. You can plot the interpolated polynomial function by simply writing \texttt{plot(z, yz)}.
+
+\vspace{10pt}
+\noindent\textbf{4. Runge's phenomenon.} This problem shows that when interpolating a function, the choice of points $x_i$ where interpolated function and actual function agree is very important. From the error analysis of interpolation, we know that error function has $n+1$ roots for $n$-th order polynomial interpolation and the location of roots of error function is exactly the selected points $x_i$.
+
+For the case when you choose uniformly spaced points to perform polynomial interpolation, this problem shows that having higher order polynomial is not a good idea. You can see that from the plot. Although the interpolated function agrees with the actual function at discrete points $x_i$, it shows large errors at other points. Higher order polynomial tend to be more oscillatory and this particular function highlights this behavior. 
+
+For the case when you choose points $x_i$ using Chebyshev points, the error function will still have $n+1$ roots at these Chebyshev points $x_i$. However, due to the way these points are selected, the error at points other than discrete points are never high. 
+
+\vspace{10pt}
+\noindent\textbf{5. Gauss quadrature method.} Consider following integration and it's approximation
+\begin{equation}\label{eq:Gauss}
+I[f] = \int_{-1}^1 g(x) \dd x \approx \sum_{i=1}^n c_i g(x_i),
+\end{equation}
+where $n$ is the number of quadrature points in the Gauss quadrature approximation, and $c_i$ and $x_i$ are the weight and location of  $i$-th point for $i=1, 2, ..., n$. From the Table 20.1 of the reference book, for the two-point Gauss quadrature method ($n=2$), we have.
+\begin{equation}
+c_1 = c_2 = 1, \qquad x_1 = -\frac{1}{\sqrt{3}}, x_2 = \frac{1}{\sqrt{3}}
+\end{equation}
+For the three-point Gauss quadrature method ($n=3$), we have
+\begin{equation}
+c_1 = c_3 = 5/9, c_2 = 8/9, \qquad x_1 = -\sqrt{\frac{3}{5}}, x_2 = 0, x_3 = \sqrt{\frac{3}{5}} .
+\end{equation}
+
+Now, for the integration such as below
+\begin{equation}
+I[f] = \int_a^b f(x) \dd x,
+\end{equation}
+you can use change in variable to convert it into the integration 
+\begin{equation}
+I[g]  = \int_{-1}^1 g(x) \dd x .
+\end{equation}
+This is done in the class. To summarize, let $y(x) = \alpha + \beta (x - a)$. We want $y=-1$ when $x = a$ and $y=1$ when $x = b$. This gives us two equations to solve for $\alpha$ and $\beta$:
+\begin{align}
+y(a) &= \alpha + \beta 0 = -1, \notag \\
+y(b) &= \alpha + \beta (b - a) = 1.
+\end{align}
+Which results in $\alpha = -1$ and $\beta = 2/(b - a)$. Thus, we have $y(x) = -1 + 2(x-a)/(b - a)$. (Note that I used Newton interpolation to fit the two paired-data $(a, -1)$ and $(b, 1)$ by a straight-line $y = \alpha + \beta (x - a)$. )
+
+Using $y = -1 + 2(x-a)/(b-a)$, we have $x = (b-a)(y+1)/2 + a$ and $\dd x =  (b-a) \dd y / 2$. With change in variable from $x$ to $y$, we have
+\begin{equation}
+I[f] = \int_{-1}^1 f(a + (b-a)(y+1)/2) (b-a) \dd y / 2 = \int_{-1}^1 g(y) \dd y = I[g],
+\end{equation}
+where $g = g(y) = (b-a) f(a + (b-a)(y+1)) / 2$. We know how to approximate $I[g]$ from \eqref{eq:Gauss}.
+
+\end{document}
