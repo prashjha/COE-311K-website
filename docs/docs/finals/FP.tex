@@ -152,7 +152,7 @@ where $H(t) = [H_2(t), H_3(t), ..., H_{N_x + 1}(t)]^T$ is the $N_x \times 1$ vec
 
 \bfit{Plot} (on the same plot using `hold on') $H(t_k)$, $k=201, 401, 601, 801, 1001$, as a function of $x$. For a given $t$, $H(t)$ is a vector with each element of the vector corresponding to different points $x$ on the bar. So you can plot the points $x_i$ on bar in the x-axis and corresponding temperature $H_i(t)$ in the y-axis.
 
-\item[(iii)] \bfit{Try} different $\Delta t$ staring with a large to a very small and \bfit{report} the $\Delta t$ such that {it forward Euler} method is stable for the above problem.
+\item[(iii)] \bfit{Try} different $\Delta t$ staring with a large to a very small and \bfit{report} the $\Delta t$ such that {it forward Euler} method is stable for the above problem. For this problem, let $T = 0.001$. You can try $N_t = 1000, 5000, 10000, ...$ and so on until $H(T)$ (solution at last time) is reasonable. (Reasonable means that the vector $H(T)$ has maximum value of $100$ (boundary condition temperature) and minimum value $0$.) This exercise shows that even for simple problem like above, \textit{forward} Euler is not a good choice as it requires very small $\Delta t$ to have stable solution. I recommend not storing the whole solution vector $H(t_1), H(t_2), ..., H(t_{N_t + 1})$ because if $N_t$ is very large, you will be storing a lot of data. Just store the solution $H(t_{N_t + 1})$ at final time step.
 \end{itemize}
  
 \section{Problem set 3 (35 marks)}
